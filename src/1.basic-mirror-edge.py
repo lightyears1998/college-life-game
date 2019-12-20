@@ -1,5 +1,5 @@
 """
-基本的元胞自动机
+镜像边界版本的基本的元胞自动机
 
 规则：
 0. 镜像边界
@@ -18,10 +18,7 @@ from util import mkdirp
 OUTPUT_DIR = "../out/1.basic(mirror)/"
 
 SIZE = 8
-BOUNDARY_CELLS = [(0, 0), (0, SIZE - 1), (SIZE - 1, 0), (SIZE - 1, SIZE - 1)] \
-                 + [(0, j) for j in range(1, SIZE-1)] + [(SIZE - 1, j) for j in range(1, SIZE-1)] \
-                 + [(i, 0) for i in range(1, SIZE-1)] + [(i, SIZE-1) for i in range(1, SIZE-1)]
-CENTRAL_CELLS = [(i, j) for i in range(1, SIZE - 1) for j in range(1, SIZE - 1)]
+CELLS = [(i, j) for i in range(0, SIZE) for j in range(0, SIZE)]
 
 MAX_ITERATION = 16
 
@@ -59,26 +56,11 @@ def iterate():
         current_board = boards[generation % 2]
         last_board = boards[(generation + 1) % 2]
 
-        # 计算边界上的格子
-        for i, j in BOUNDARY_CELLS:
+        for i, j in CELLS:
             total = 0
             for x in range(-1, 2):
                 for y in range(-1, 2):
                     total = total + last_board.iat[(i + x + SIZE) % SIZE, (j + y + SIZE) % SIZE]
-            total = total - last_board.iat[i, j]
-            if total >= 4 or total <= 1:
-                current_board.iat[i, j] = 0
-            elif total == 3:
-                current_board.iat[i, j] = 1
-            else:
-                current_board.iat[i, j] = last_board.iat[i, j]
-
-        # 计算非边界上的格子
-        for i, j in CENTRAL_CELLS:
-            total = 0
-            for x in range(-1, 2):
-                for y in range(-1, 2):
-                    total = total + last_board.iat[i + x, j + y]
             total = total - last_board.iat[i, j]
             if total >= 4 or total <= 1:
                 current_board.iat[i, j] = 0

@@ -7,16 +7,17 @@
 
 import numpy as np
 import pandas as pd
+import math
 from matplotlib import pyplot as plt
 from util import mkdirp
 
 
-OUTPUT_DIR = "../out/2.oxygen/"
+OUTPUT_DIR = "../out/2.oxygen(极大中心发散)/"
 
 SIZE = 8
 CELLS = [(i, j) for i in range(0, SIZE) for j in range(0, SIZE)]
 
-MAX_ITERATION = 32
+MAX_ITERATION = 4
 
 initial_oxygen_distribution: pd.DataFrame
 distributions: [pd.DataFrame]
@@ -26,9 +27,8 @@ def init():
     global initial_oxygen_distribution, distributions
 
     initial_oxygen_distribution = pd.DataFrame(data=np.zeros([SIZE, SIZE]), dtype=float)
-    for i in range(0, SIZE):
-        for j in range(0, SIZE):
-            initial_oxygen_distribution.iat[i, j] = np.random.rand()
+    center_i = math.floor(SIZE/2-1)
+    initial_oxygen_distribution.loc[[center_i, center_i+1], [center_i, center_i + 1]] = 2
     distributions = [initial_oxygen_distribution.copy(), initial_oxygen_distribution.copy()]
 
 

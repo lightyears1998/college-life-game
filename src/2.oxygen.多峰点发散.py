@@ -11,12 +11,12 @@ from matplotlib import pyplot as plt
 from util import mkdirp
 
 
-OUTPUT_DIR = "../out/2.oxygen/"
+OUTPUT_DIR = "../out/2.oxygen(多峰点发散)/"
 
 SIZE = 8
 CELLS = [(i, j) for i in range(0, SIZE) for j in range(0, SIZE)]
 
-MAX_ITERATION = 32
+MAX_ITERATION = 4
 
 initial_oxygen_distribution: pd.DataFrame
 distributions: [pd.DataFrame]
@@ -26,9 +26,10 @@ def init():
     global initial_oxygen_distribution, distributions
 
     initial_oxygen_distribution = pd.DataFrame(data=np.zeros([SIZE, SIZE]), dtype=float)
-    for i in range(0, SIZE):
-        for j in range(0, SIZE):
-            initial_oxygen_distribution.iat[i, j] = np.random.rand()
+    initial_oxygen_distribution.iloc[1, 1] = 2
+    initial_oxygen_distribution.iloc[SIZE - 2, SIZE - 2] = 2
+    initial_oxygen_distribution.iloc[1, SIZE - 2] = 2
+    initial_oxygen_distribution.iloc[SIZE - 2, 1] = 2
     distributions = [initial_oxygen_distribution.copy(), initial_oxygen_distribution.copy()]
 
 
