@@ -3,6 +3,7 @@
 
 规则：
 1. 镜像边界
+2. 气体扩散公式
 """
 
 import numpy as np
@@ -32,7 +33,7 @@ def init():
     distributions = [initial_oxygen_distribution.copy(), initial_oxygen_distribution.copy()]
 
 
-def show_board(ax, board, title=None):
+def show_oxygen_distribution(ax, board, title=None):
     ax.imshow(board, cmap=plt.cm.Blues, vmin=0, vmax=1)
     ax.set_xticks(np.arange(0, SIZE, 1))
     ax.set_yticks(np.arange(0, SIZE, 1))
@@ -81,8 +82,8 @@ def iterate():
         print("process: " + f"{generation}/{MAX_ITERATION}")
         if generation % 1 == 0:
             fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2)
-            show_board(ax1, last_distribution, f"Generation: {generation - 1}")
-            show_board(ax2, current_distribution, f"Generation: {generation}")
+            show_oxygen_distribution(ax1, last_distribution, f"Generation: {generation - 1}")
+            show_oxygen_distribution(ax2, current_distribution, f"Generation: {generation}")
             fig.tight_layout()
             fig.savefig(OUTPUT_DIR + str(generation))
             plt.close(fig)

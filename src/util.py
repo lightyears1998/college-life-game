@@ -1,6 +1,14 @@
 import errno
 import os
 
+gb = "2345"
+
+
+def change():
+    global gb
+    print(gb)
+    gb = "ss"
+
 
 def mkdirp(path: str) -> None:
     """

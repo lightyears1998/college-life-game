@@ -3,6 +3,7 @@
 
 规则：
 1. 镜像边界
+2. 气体扩散公式
 """
 
 import numpy as np
