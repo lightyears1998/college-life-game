@@ -1,5 +1,5 @@
 """
-氧气和生产者模型
+氧气、生产者和消费者模型
 """
 
 import math
@@ -14,20 +14,19 @@ OUTPUT_DIR = "../out/3.producer/"
 SIZE = 8
 CELLS = [(i, j) for i in range(0, SIZE) for j in range(0, SIZE)]
 
-MAX_GENERATION = 64
+MAX_GENERATION = 32
 CURRENT_GENERATION = 1
-MICRO_TIME = 1
 
 initial_oxygen_distribution: pd.DataFrame
 oxygen_distributions: [pd.DataFrame]
 
 
 def get_last_oxygen_distribution():
-    return oxygen_distributions[(MICRO_TIME + 1) % 2]
+    return oxygen_distributions[(CURRENT_GENERATION + 1) % 2]
 
 
 def get_current_oxygen_distribution():
-    return oxygen_distributions[MICRO_TIME % 2]
+    return oxygen_distributions[CURRENT_GENERATION % 2]
 
 
 def init_oxygen():
@@ -91,9 +90,6 @@ def show_producer_distribution(ax):
 
 
 def oxygen_diffuse():
-    global MICRO_TIME
-
-    MICRO_TIME = MICRO_TIME + 1
     current_distribution = get_current_oxygen_distribution()
     last_distribution = get_last_oxygen_distribution()
 
@@ -145,7 +141,7 @@ def producer_produce_oxygen():
                 producer_density = producer_distribution.iat[ti, tj]
                 if producer_density > 0:
                     oxygen_level = oxygen_distribution.iat[ti, tj]
-                    produce_oxygen = sun_level * producer_density * max(1 - oxygen_level, 0)
+                    produce_oxygen = sun_level * producer_density * (1 - oxygen_level)
                     oxygen_distribution.iat[ti, tj] = oxygen_level + produce_oxygen
 
 
@@ -176,24 +172,6 @@ def producer_action():
     producer_emerge()
 
 
-def consumer_grow_density():
-    pass
-
-
-def consumer_move():
-    pass
-
-
-def consumer_emerge():
-    pass
-
-
-def consumer_action():
-    consumer_grow_density()
-    consumer_move()
-    consumer_emerge()
-
-
 def plot_current_state():
     fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2)
     show_oxygen_distribution(ax1)
@@ -208,11 +186,10 @@ def iterate():
     global CURRENT_GENERATION
 
     plot_current_state()  # 打印初始状态
-    while CURRENT_GENERATION < MAX_GENERATION:
+    while CURRENT_GENERATION < 32:
         CURRENT_GENERATION = CURRENT_GENERATION + 1
 
-        for _ in range(4):
-            oxygen_diffuse()
+        oxygen_diffuse()
         producer_action()
 
         print("process: " + f"{CURRENT_GENERATION}/{MAX_GENERATION}")
