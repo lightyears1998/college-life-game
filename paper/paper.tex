@@ -1,0 +1,73 @@
+% 发行版：TexLive2019
+% 编译器：XeLaTex
+
+\documentclass{ctexart}
+\usepackage{ctex}
+\usepackage[a4paper, left=20mm, right=20mm, top=30mm, bottom=30mm]{geometry}
+\usepackage{xcolor}
+\usepackage{listings}
+\lstdefinestyle{lfonts}{
+  basicstyle   = \footnotesize\ttfamily,
+  stringstyle  = \color{purple},
+  keywordstyle = \color{blue!60!black}\bfseries,
+  commentstyle = \color{olive}\scshape,
+}
+\lstdefinestyle{lnumbers}{
+  numbers     = left,
+  numberstyle = \tiny,
+  numbersep   = 1em,
+  firstnumber = 1,
+  stepnumber  = 1,
+}
+\lstdefinestyle{llayout}{
+  breaklines       = true,
+  tabsize          = 2,
+  columns          = flexible,
+}
+\lstdefinestyle{lgeometry}{
+  xleftmargin      = 20pt,
+  xrightmargin     = 0pt,
+  frame            = tb,
+  framesep         = \fboxsep,
+  framexleftmargin = 20pt,
+}
+\lstdefinestyle{lgeneral}{
+  style = lfonts,
+  style = lnumbers,
+  style = llayout,
+  style = lgeometry,
+}
+\lstdefinestyle{python}{
+    language = {Python},
+    style    = lgeneral,
+}
+
+\author{
+	冯国蕴 \and 林欣煜 \and 马詠汛 \and 谢金宏
+}
+\title{使用元胞自动机模拟简单生态系统}
+\date{2019年12月21日}
+
+\begin{document}
+
+\maketitle          
+
+\begin{abstract}
+在本次课题中，我们小组使用Python语言实现了元胞自动机，并在此基础上进行扩展，模拟了具有氧气、生产者和消费者三要素的生态系统。
+\end{abstract}
+
+\tableofcontents
+
+\section{基本元胞自动机的实现}
+
+\section{氧气扩散模型}
+
+\section{光照和生产者模型}
+
+\section{消费者模型}
+
+\section{模拟生态系统}
+
+\section{结语}
+
+\end{document}
