@@ -176,24 +176,6 @@ def producer_action():
     producer_emerge()
 
 
-def consumer_grow_density():
-    pass
-
-
-def consumer_move():
-    pass
-
-
-def consumer_emerge():
-    pass
-
-
-def consumer_action():
-    consumer_grow_density()
-    consumer_move()
-    consumer_emerge()
-
-
 def plot_current_state():
     fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2)
     show_oxygen_distribution(ax1)
