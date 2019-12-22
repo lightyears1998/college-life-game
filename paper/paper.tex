@@ -69,6 +69,12 @@
 
 \tableofcontents
 
+\newpage
+
+\listoffigures
+
+\newpage
+
 \section{细胞自动机与康威生命游戏}
 
 细胞自动机\footnote{Cellular automaton \url{https://en.wikipedia.org/wiki/Cellular_automaton}}最早由冯·诺依曼在1950年代为模拟生物细胞的自我复制而提出，起初未受到科学界的广泛关注。后因约翰·何顿·康威设计了生命游戏\footnote{Conway's Game of Life \url{https://en.wikipedia.org/wiki/Conway's_Game_of_Life}}而闻名于世。本节将简要介绍细胞自动机与康威生命游戏。
@@ -198,7 +204,21 @@ for i, j in CELLS:
   \label{fig:oxygen-flow}
 \end{figure}
 
-在图和图中，我们还模拟了棋盘中氧气从一处或几处浓度峰点向外自由扩散的情况。
+在图\ref{fig:oxygen-4polar-flow}和图\ref{fig:oxygen-polar-flow}中，我们还模拟了棋盘中氧气从一处或几处浓度峰点向外自由扩散的情况。
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{oxygen-4polar-flow.png}
+  \caption{氧气从峰值点的扩散1}
+  \label{fig:oxygen-4polar-flow}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{oxygen-polar-flow.png}
+  \caption{氧气从峰值点的扩散2}
+  \label{fig:oxygen-polar-flow}
+\end{figure}
 
 从图像上看，我们的氧气模型一定程度上成功地模拟了现实世界的情况。
 
@@ -229,21 +249,42 @@ for i, j in CELLS:
 
 公式中$oxygenLevel$为生产者所在格子的氧气浓度。公式的生物学含义是，在其他条件一定的前提下，氧气浓度越高（意味着二氧化碳的浓度越低），生产者产生氧气的能力就越受到限制。此公式也保证了生产者生产氧气后，其所在格子的氧气浓度不会因此而超过1。
 
-图为程序\underline{}模拟的生产者生产氧气的过程，氧气不断从生产者处产生，尔后扩散到模拟生态系统中的其他部分。为了平衡氧气的产生速率与生产者的活动速率，程序中设置氧气迭代4次，生产者迭代1次，下同。
+图\ref{fig:producer-produce}为程序\underline{3.producer.no-growth.py}模拟的生产者生产氧气的过程。程序先给出随机氧气分布然后开始迭代，氧气从生产者处产生，尔后扩散到环境中的其他部分。
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{producer-produce.png}
+  \caption{生产者生产氧气}
+  \label{fig:producer-produce}
+\end{figure}
 
 \subsection{种群密度的增长规则} \label{sec:density-growth-curve}
 
 从生物学的角度上看，生物种群密度的增长随时间的推移而呈现出S型曲线，即种群的增长率一直下降，增长速率先增加后下降。
 
-这里引用图片。
+\begin{figure}[ht]
+  \centering
+  \includegraphics[scale=0.6]{density-curve.png}
+  \caption{种群密度曲线}
+  \label{fig:density-curve}
+\end{figure}
 
-我们定义种群密度曲线为二次曲线$y = -(x-1)^2 + 1$。如图所示，横轴为上次迭代中生产者的种群密度，纵轴为本次迭代生产者的种群密度。整条曲线在直线$y=x$上方，表示种群密度保持增长，且曲线斜率不断下降，表示种群增长率不断下降。
+我们定义种群密度曲线为二次曲线$y = -(x-1)^2 + 1$。如图\ref{fig:density-curve}所示，横轴为上次迭代中生产者的种群密度，纵轴为本次迭代生产者的种群密度。整条曲线在直线$y=x$上方，表示种群密度保持增长；且曲线斜率不断下降，表示种群增长率不断下降。
 
 \subsection{繁衍规则}
 
 类似于康威生命游戏中细胞的增殖，我们模拟生态系统中的生产者按以下规则在新的格子上产生种群：设当前格子生产者的种群密度为$density$，则在其不包括自身的8个邻居中，对于每个邻居格子，若此邻居格子上没有生产者，则有$\frac{density}{8}$的概率在这个格子上产生种群密度为0.02的生产者。
 
 按上述规则进行迭代，当前格子上生产者的种群密度越高，就越容易将种子传播到邻居格子处，播种出新的群落，这是符合常识的。
+
+程序\underline{3.producer.py}模拟了生产者增长和繁衍的过程，其结果如图\ref{fig:producer-growth}所示。
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{producer-growth.png}
+  \caption{生产者的增长和繁衍}
+  \label{fig:producer-growth}
+\end{figure}
 
 \section{消费者模型}
 
@@ -276,17 +317,35 @@ for i, j in CELLS:
 
 公式\ref{equ:cell-score}中，$oxygenLevel$和$producerLevel$分别为对应格子的氧气浓度和生产者种群密度。$weight$为权重。我们小组的程序中，氧气权重和生产者种群密度权重分别取值0.6和0.4。
 
+程序\underline{4.consumer.no-emerge.py}模拟了消费者的呼吸、捕食和种群增长和移动过程，其结果如图\ref{fig:consumer-move}所示。
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{consumer-move.png}
+  \caption{消费者的呼吸、捕食和种群增长和移动}
+  \label{fig:consumer-move}
+\end{figure}
+
 \subsection{繁衍规则}
 
 消费者也类似于生产者，具有繁衍种群的特性。设当前格子消费者的种群密度为$density$，则在其不包括自身的8个邻居中，对于每个邻居格子，若此邻居格子上没有消费者，则有$\frac{density}{8}$的概率在这个格子上产生种群密度为0.02的消费者。
 
+程序\underline{4.consumer.py}模拟了完整的消费者模型，模拟结果如图\ref{fig:consumer}所示。
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{consumer.png}
+  \caption{具有完整行为的消费者}
+  \label{fig:consumer}
+\end{figure}
+
 \section{模拟生态系统}
 
-通过建立氧气模型、生产者模型和消费者模型，我们已经取得了模拟一个简单的生态系统所需要的全部积木。将这三片积木集合到一个棋盘中（或者说是在z轴方向层叠的三块棋盘上），即可模拟出一个简单的生态系统。
+通过建立氧气模型、生产者模型和消费者模型，我们已经取得了模拟一个简单的生态系统所需要的全部积木。将这三片积木集合到一个棋盘中（或者说是在z轴方向层叠的三块棋盘上），即可模拟出一个简单的生态系统。为了平衡氧气的产生速率与生产者的活动速率，程序中设置氧气迭代4次，生产者和消费者迭代1次。程序\underline{5.ecosystem.py}模拟了完整的生态系统。
 
 不同光照条件对生态系统的影响。
 
-消费者的不同移动倾向对生态系统的影响。
+消费者倾向于向氧气富足方向移动和倾向于向食物富足方向移动对生态系统的影响。
 
 \section{结语}
 
@@ -298,6 +357,6 @@ for i, j in CELLS:
 
 综上所述，或许不能称我们得到的模型为“细胞自动机”。
 
-其实这并不是我们最初想法的全部。本文原题为《使用细胞自动机和遗传算法模拟简单生态系统》。设想在建立氧气、生产者和消费者模型的基础上，结合遗传算法，模拟在不同的环境参数下，生物选择和进化的过程。可惜编程过程中出现了一些问题导致时间不足，只好作罢。希望日后有机会继续完善这个模型。
+其实这并不是我们最初想法的全部。本文原题为《使用细胞自动机和遗传算法模拟简单生态系统》。设想在建立氧气、生产者和消费者模型的基础上，结合遗传算法，模拟在不同的环境参数下，生物选择和进化的过程。但编程过程中出现了一些问题导致时间不足，只好作罢。希望日后有机会继续完善这个模型。
 
 \end{document}
