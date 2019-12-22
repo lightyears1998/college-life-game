@@ -77,7 +77,7 @@ def iterate():
                 current_distribution.iat[i, j] = \
                     current_distribution.iat[i, j] + last_distribution.iat[i, j] - total_shared
             else:
-                current_distribution.iat[i, j] = last_distribution.iat[i, j]
+                current_distribution.iat[i, j] = current_distribution.iat[i, j] + last_distribution.iat[i, j]
 
         print("process: " + f"{generation}/{MAX_ITERATION}")
         if generation % 1 == 0:

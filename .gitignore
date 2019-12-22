@@ -1,3 +1,6 @@
+# Python cache
+**.pyc
+
 # 输出目录
 out/**
 !out/PLACEHOLDER

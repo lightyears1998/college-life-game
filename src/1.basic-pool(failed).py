@@ -16,22 +16,22 @@ MAX_GENERATION = 16000
 CURRENT_GENERATION = 0
 
 
-initial_oxygen_distribution = pd.DataFrame(data=np.zeros([SIZE, SIZE]), dtype=np.int8)
-oxygen_distributions = [initial_oxygen_distribution, initial_oxygen_distribution]
+initial_board = pd.DataFrame(data=np.zeros([SIZE, SIZE]), dtype=np.int8)
+boards = [initial_board.copy(), initial_board.copy()]
 active_position = [(x, y) for x in range(1, SIZE - 1) for y in range(1, SIZE - 1)]
 
 
 def init():
-    global oxygen_distributions
+    global initial_board, boards
 
     for i in range(1, SIZE - 1):
         for j in range(1, SIZE - 1):
-            initial_oxygen_distribution.iat[i, j] = np.random.randint(2)
-    boards = [initial_oxygen_distribution, initial_oxygen_distribution]
+            initial_board.iat[i, j] = np.random.randint(2)
+    boards = [initial_board.copy(), initial_board.copy()]
 
 
 def calculate(location: (int, int)):
-    global oxygen_distributions
+    global boards
 
     x, y = location
     current_board = boards[CURRENT_GENERATION % 2]
@@ -58,7 +58,7 @@ def main():
 
         print("process: " + f"{CURRENT_GENERATION}/{MAX_GENERATION}")
         if CURRENT_GENERATION % 100 == 0:
-            plt.matshow(oxygen_distributions[CURRENT_GENERATION % 2])
+            plt.matshow(boards[CURRENT_GENERATION % 2])
             plt.title("Generation " + str(CURRENT_GENERATION))
             plt.savefig(str(CURRENT_GENERATION))
         CURRENT_GENERATION = CURRENT_GENERATION + 1

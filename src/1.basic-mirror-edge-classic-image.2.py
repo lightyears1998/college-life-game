@@ -1,5 +1,5 @@
 """
-镜像边界版本的基本的元胞自动机
+生命游戏的经典图像
 
 规则：
 0. 镜像边界
@@ -15,12 +15,12 @@ from matplotlib import pyplot as plt
 from util import mkdirp
 
 
-OUTPUT_DIR = "../out/1.basic(mirror)/"
+OUTPUT_DIR = "../out/1.basic.经典震荡图像/"
 
-SIZE = 8
+SIZE = 11
 CELLS = [(i, j) for i in range(0, SIZE) for j in range(0, SIZE)]
 
-MAX_ITERATION = 16
+MAX_ITERATION = 4
 
 initial_board: pd.DataFrame
 boards: [pd.DataFrame]
@@ -29,10 +29,20 @@ boards: [pd.DataFrame]
 def init():
     global initial_board, boards
 
-    initial_board = pd.DataFrame(data=np.zeros([SIZE, SIZE]), dtype=np.int8)
-    for i in range(0, SIZE):
-        for j in range(0, SIZE):
-            initial_board.iat[i, j] = np.random.randint(2)
+    data = [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+        [0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0],
+        [0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    ]
+    initial_board = pd.DataFrame(data=data, dtype=np.int8)
     boards = [initial_board.copy(), initial_board.copy()]
 
 
