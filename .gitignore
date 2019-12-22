@@ -1,6 +1,9 @@
 # Python cache
 **.pyc
 
-# 输出目录
+# Program output
 out/**
 !out/PLACEHOLDER
+
+# Compiled PDF
+**.pdf
