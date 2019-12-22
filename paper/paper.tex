@@ -265,11 +265,22 @@ for i, j in CELLS:
 \begin{figure}[ht]
   \centering
   \includegraphics[scale=0.6]{density-curve.png}
-  \caption{种群密度曲线}
+  \caption{理想种群密度曲线}
   \label{fig:density-curve}
 \end{figure}
 
-我们定义种群密度曲线为二次曲线$y = -(x-1)^2 + 1$。如图\ref{fig:density-curve}所示，横轴为上次迭代中生产者的种群密度，纵轴为本次迭代生产者的种群密度。整条曲线在直线$y=x$上方，表示种群密度保持增长；且曲线斜率不断下降，表示种群增长率不断下降。
+我们定义\textbf{理想种群密度曲线$dt(x)$}为二次曲线$y = -(x-1)^2 + 1$。如图\ref{fig:density-curve}所示，横轴为上次迭代中生产者的种群密度，纵轴为本次迭代生产者的种群密度。整条曲线在直线$y=x$上方，表示种群密度保持增长；且曲线斜率不断下降，表示种群增长率不断下降。
+
+\begin{equation}
+  dt:= density_{current} = -(density_{last} - 1)^{2} + 1
+  \label{equ:density-curve}
+\end{equation}
+
+为了体现光照强度对生产者生产的影响，在一次迭代中，生产者的实际种群密度使用下面的公式进行修正：
+
+\begin{equation}
+  density_{current} = density_{last} + (dt(density_{last}) - density_{last})) \cdot sunLevel
+\end{equation}
 
 \subsection{繁衍规则}
 
@@ -299,7 +310,7 @@ for i, j in CELLS:
 \begin{enumerate}
   \item 计算当前格子上当前种群密度的消费者的需氧量$need$。若当前格子上实际含氧量$actual$小于$need$，则消费者的种群密度下降为$density \cdot \frac{need - actual}{need}$，并消耗$actual$量的氧气；否则消耗$need$量的氧气。
   \item 计算当前格子上当前种群密度的消费者的食物需求量$need$（若第一步计算中消费者的种群密度下降了，则使用下降后的种群密度计算$need$）。若当前格子上的生产者种群密度$actual$小于$need$，则生产者的种群密度下降为$density \cdot (\frac{1}{2} + \frac{1}{2} \cdot \frac{need - actual}{need})$，并消耗$actual$量的生产者；否则消耗$need$量的生产者。
-  \item 若经过前两步计算后，消费者消耗了$need$量的氧气和生产者，则表示环境适宜，消费者按照种群密度曲线进行增长。
+  \item 若经过前两步计算后，消费者消耗了$need$量的氧气和生产者，则表示环境适宜，消费者按照理想种群密度曲线进行增长（公式\ref{equ:density-curve}）。
 \end{enumerate}
 
 在我们设计的消费者规则中，氧气浓度比食物更重要些，缺乏氧气比缺乏食物更难存活。这是考虑到日常生活的经验中，生物缺少氧气会导致窒息死亡，但在食物短缺的情况下往往还能依据自身储备的碳量存活一段时间。
@@ -341,22 +352,48 @@ for i, j in CELLS:
 
 \section{模拟生态系统}
 
-通过建立氧气模型、生产者模型和消费者模型，我们已经取得了模拟一个简单的生态系统所需要的全部积木。将这三片积木集合到一个棋盘中（或者说是在z轴方向层叠的三块棋盘上），即可模拟出一个简单的生态系统。为了平衡氧气的产生速率与生产者的活动速率，程序中设置氧气迭代4次，生产者和消费者迭代1次。程序\underline{5.ecosystem.py}模拟了完整的生态系统。
+通过建立氧气模型、生产者模型和消费者模型，我们已经取得了模拟一个简单的生态系统所需要的全部积木。将这三片积木拼装在到一个棋盘中（或者说是在z轴方向层叠的三块棋盘上），即可模拟出一个简单的生态系统。为了平衡氧气的产生速率与生产者、消费者的活动速率，程序中计算迭代的顺序为：氧气迭代4次，生产者和消费者各迭代1次。在程序\underline{5.ecosystem.py}模拟了完整的生态系统。
 
-不同光照条件对生态系统的影响。
+\begin{figure}[ht]
+  \centering
+  \includegraphics[scale=0.75]{weak-light.png}
+  \caption{弱光照条件（0.2）下迭代128次后的生态系统}
+  \label{fig:weak-light}
+\end{figure}
 
-消费者倾向于向氧气富足方向移动和倾向于向食物富足方向移动对生态系统的影响。
+\begin{figure}[ht]
+  \centering
+  \includegraphics[scale=0.75]{medium-light.png}
+  \caption{中等光照条件（0.5）下迭代128次后的生态系统}
+  \label{fig:medium-light}
+\end{figure}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[scale=0.75]{abundant-light.png}
+  \caption{强光照条件（0.8）下迭代128次后的生态系统}
+  \label{fig:abundant-light}
+\end{figure}
+
+利用该程序，并控制光照强度变量，我们获得了在三种不同强度的光照条件下模拟生态系统迭代128次后的图形，如图\ref{fig:weak-light}、图\ref{fig:medium-light}和图\ref{fig:abundant-light}所示。从图中可以很明显地看出不同光照条件下生态系统的差异。生态系统的光照条件越充足，所能承载的消费者种群密度就越高。
+
+图\ref{fig:ecosystem}为一个模拟生态系统的演化过程。
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{ecosystem.png}
+  \caption{一个生态系统的演化过程}
+  \label{fig:ecosystem}
+\end{figure}
 
 \section{结语}
 
 我们小组提出的关于生态系统的计算模型，从一定程度上模拟了现实世界中的生态系统。
 
-我们在对细胞自动机进行“拓展”的时，其实已经破坏了细胞自动机的一些性质。具体而言，有：
+我们也认识到提出的模型中存在有待商榷之处。例如，在基础的氧气模型中，我们规定单位格点的氧气密度不能超过1，我们也尝试建立数学规则将氧气密度约束在$[0, 1]$上。但在实际的实验数据中，总会有些意料之外的情形。这说明我们提出的氧气模型是存在一定的缺陷的。
 
-列表。
+我们在对细胞自动机进行“拓展”的时，其实已经破坏了细胞自动机的一些性质。举一例说，消费者的移动规则破坏了细胞自动机的平行计算性。因为在计算移动时，不仅使用了上一轮的数据，还使用了本轮的数据，因此遍历元胞的先后顺序会影响计算的结果。综上所述，或许不能称我们得到的模型为“细胞自动机”。
 
-综上所述，或许不能称我们得到的模型为“细胞自动机”。
-
-其实这并不是我们最初想法的全部。本文原题为《使用细胞自动机和遗传算法模拟简单生态系统》。设想在建立氧气、生产者和消费者模型的基础上，结合遗传算法，模拟在不同的环境参数下，生物选择和进化的过程。但编程过程中出现了一些问题导致时间不足，只好作罢。希望日后有机会继续完善这个模型。
+这篇报告所体现的内容并不是我们最初想法的全部。报告原题为《使用细胞自动机和遗传算法模拟简单生态系统》，原本设想是在建立氧气、生产者和消费者模型的基础上，结合遗传算法，模拟在不同的环境参数下，自然选择和生物进化的过程。但编程过程中出现了一些问题。时间不足，只好作罢。希望日后有机会继续完善这个模型。
 
 \end{document}

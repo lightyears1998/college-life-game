@@ -9,7 +9,7 @@ from matplotlib import pyplot as plt
 from util import mkdirp
 
 
-OUTPUT_DIR = "../out/4.consumer/"
+OUTPUT_DIR = "../out/5.ecosystem/"
 
 SIZE = 8
 CELLS = [(i, j) for i in range(0, SIZE) for j in range(0, SIZE)]
@@ -18,7 +18,7 @@ MAX_GENERATION = 128
 CURRENT_GENERATION = 1
 MICRO_TIME = 1
 
-sun_level = 1  # 光照强度
+sun_level = 0.2  # 光照强度
 initial_oxygen_distribution: pd.DataFrame
 initial_producer_distribution: pd.DataFrame
 initial_consumer_distribution: pd.DataFrame
@@ -307,7 +307,7 @@ def plot_current_state():
 def iterate():
     global CURRENT_GENERATION
 
-    plot_current_state()  # 打印初始状态
+    plot_current_state()
     while CURRENT_GENERATION < MAX_GENERATION:
         CURRENT_GENERATION = CURRENT_GENERATION + 1
 
@@ -317,7 +317,6 @@ def iterate():
         consumer_action()
 
         print("process: " + f"{CURRENT_GENERATION}/{MAX_GENERATION}")
-        print(get_current_consumer_distribution())
 
         if CURRENT_GENERATION % 1 == 0:
             plot_current_state()

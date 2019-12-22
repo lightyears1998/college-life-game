@@ -34,7 +34,7 @@ def init():
 
 
 def show_board(ax, board, title=None):
-    ax.imshow(board, cmap=plt.cm.Blues, vmin=0, vmax=1)
+    ax.imshow(board, cmap="Blues", vmin=0, vmax=1)
     ax.set_xticks(np.arange(0, SIZE, 1))
     ax.set_yticks(np.arange(0, SIZE, 1))
     ax.set_xticklabels(np.arange(1, SIZE + 1, 1))

@@ -189,7 +189,7 @@ def plot_current_state():
 def iterate():
     global CURRENT_GENERATION
 
-    plot_current_state()  # 打印初始状态
+    plot_current_state()
     while CURRENT_GENERATION < MAX_GENERATION:
         CURRENT_GENERATION = CURRENT_GENERATION + 1
 

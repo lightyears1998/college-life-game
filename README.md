@@ -1,1 +1,1 @@
-# College Life Game
+# 利用细胞自动机模拟简单生态系统
